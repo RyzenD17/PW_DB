@@ -1,0 +1,632 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="GenderTable">
+          <Key>
+            <PropertyRef Name="IDGender" />
+          </Key>
+          <Property Name="IDGender" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrdersTable">
+          <Key>
+            <PropertyRef Name="IDOrder" />
+          </Key>
+          <Property Name="IDOrder" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDUser" Type="int" Nullable="false" />
+          <Property Name="IDPets" Type="int" Nullable="false" />
+          <Property Name="WorkTime" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PetsTable">
+          <Key>
+            <PropertyRef Name="IDentry" />
+          </Key>
+          <Property Name="IDentry" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HavingAPet" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoleTable">
+          <Key>
+            <PropertyRef Name="IDRole" />
+          </Key>
+          <Property Name="IDRole" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServicesTable">
+          <Key>
+            <PropertyRef Name="IDService" />
+          </Key>
+          <Property Name="IDService" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Service" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="ServiceCost" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeTable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDWorkTime" Type="int" Nullable="false" />
+          <Property Name="IDOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserPhoto">
+          <Key>
+            <PropertyRef Name="IDUser" />
+          </Key>
+          <Property Name="IDUser" Type="int" Nullable="false" />
+          <Property Name="PhotoPath" Type="nchar" MaxLength="100" />
+          <Property Name="PhotoBinary" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="IDUser" />
+          </Key>
+          <Property Name="IDUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="int" Nullable="false" />
+          <Property Name="IDGender" Type="int" Nullable="false" />
+          <Property Name="IDRole" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WorkersTable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDOrder" Type="int" Nullable="false" />
+          <Property Name="IDService" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WorkTimeTable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkTime" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_OrdersTable_PetsTable">
+          <End Role="PetsTable" Type="Self.PetsTable" Multiplicity="1" />
+          <End Role="OrdersTable" Type="Self.OrdersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PetsTable">
+              <PropertyRef Name="IDentry" />
+            </Principal>
+            <Dependent Role="OrdersTable">
+              <PropertyRef Name="IDPets" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTable_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="OrdersTable" Type="Self.OrdersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="IDUser" />
+            </Principal>
+            <Dependent Role="OrdersTable">
+              <PropertyRef Name="IDUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTable_OrdersTable">
+          <End Role="OrdersTable" Type="Self.OrdersTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TimeTable" Type="Self.TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTable">
+              <PropertyRef Name="IDOrder" />
+            </Principal>
+            <Dependent Role="TimeTable">
+              <PropertyRef Name="IDOrder" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTable_WorkTimeTable">
+          <End Role="WorkTimeTable" Type="Self.WorkTimeTable" Multiplicity="1" />
+          <End Role="TimeTable" Type="Self.TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkTimeTable">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TimeTable">
+              <PropertyRef Name="IDWorkTime" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPhoto_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserPhoto" Type="Self.UserPhoto" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="IDUser" />
+            </Principal>
+            <Dependent Role="UserPhoto">
+              <PropertyRef Name="IDUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_GenderTable">
+          <End Role="GenderTable" Type="Self.GenderTable" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GenderTable">
+              <PropertyRef Name="IDGender" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="IDGender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_RoleTable">
+          <End Role="RoleTable" Type="Self.RoleTable" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTable">
+              <PropertyRef Name="IDRole" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="IDRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkersTable_OrdersTable">
+          <End Role="OrdersTable" Type="Self.OrdersTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WorkersTable" Type="Self.WorkersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTable">
+              <PropertyRef Name="IDOrder" />
+            </Principal>
+            <Dependent Role="WorkersTable">
+              <PropertyRef Name="IDOrder" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkersTable_ServicesTable">
+          <End Role="ServicesTable" Type="Self.ServicesTable" Multiplicity="1" />
+          <End Role="WorkersTable" Type="Self.WorkersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServicesTable">
+              <PropertyRef Name="IDService" />
+            </Principal>
+            <Dependent Role="WorkersTable">
+              <PropertyRef Name="IDService" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ModelContainer">
+          <EntitySet Name="GenderTable" EntityType="Self.GenderTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrdersTable" EntityType="Self.OrdersTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PetsTable" EntityType="Self.PetsTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleTable" EntityType="Self.RoleTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServicesTable" EntityType="Self.ServicesTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeTable" EntityType="Self.TimeTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPhoto" EntityType="Self.UserPhoto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorkersTable" EntityType="Self.WorkersTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorkTimeTable" EntityType="Self.WorkTimeTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_OrdersTable_PetsTable" Association="Self.FK_OrdersTable_PetsTable">
+            <End Role="PetsTable" EntitySet="PetsTable" />
+            <End Role="OrdersTable" EntitySet="OrdersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTable_Users" Association="Self.FK_OrdersTable_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="OrdersTable" EntitySet="OrdersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTable_OrdersTable" Association="Self.FK_TimeTable_OrdersTable">
+            <End Role="OrdersTable" EntitySet="OrdersTable" />
+            <End Role="TimeTable" EntitySet="TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTable_WorkTimeTable" Association="Self.FK_TimeTable_WorkTimeTable">
+            <End Role="WorkTimeTable" EntitySet="WorkTimeTable" />
+            <End Role="TimeTable" EntitySet="TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPhoto_Users" Association="Self.FK_UserPhoto_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPhoto" EntitySet="UserPhoto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_GenderTable" Association="Self.FK_Users_GenderTable">
+            <End Role="GenderTable" EntitySet="GenderTable" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_RoleTable" Association="Self.FK_Users_RoleTable">
+            <End Role="RoleTable" EntitySet="RoleTable" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkersTable_OrdersTable" Association="Self.FK_WorkersTable_OrdersTable">
+            <End Role="OrdersTable" EntitySet="OrdersTable" />
+            <End Role="WorkersTable" EntitySet="WorkersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkersTable_ServicesTable" Association="Self.FK_WorkersTable_ServicesTable">
+            <End Role="ServicesTable" EntitySet="ServicesTable" />
+            <End Role="WorkersTable" EntitySet="WorkersTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="GenderTable" EntityType="Model.GenderTable" />
+          <EntitySet Name="OrdersTable" EntityType="Model.OrdersTable" />
+          <EntitySet Name="PetsTable" EntityType="Model.PetsTable" />
+          <EntitySet Name="RoleTable" EntityType="Model.RoleTable" />
+          <EntitySet Name="ServicesTable" EntityType="Model.ServicesTable" />
+          <EntitySet Name="TimeTable" EntityType="Model.TimeTable" />
+          <EntitySet Name="UserPhoto" EntityType="Model.UserPhoto" />
+          <EntitySet Name="Users" EntityType="Model.Users" />
+          <EntitySet Name="WorkersTable" EntityType="Model.WorkersTable" />
+          <EntitySet Name="WorkTimeTable" EntityType="Model.WorkTimeTable" />
+          <AssociationSet Name="FK_Users_GenderTable" Association="Model.FK_Users_GenderTable">
+            <End Role="GenderTable" EntitySet="GenderTable" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTable_PetsTable" Association="Model.FK_OrdersTable_PetsTable">
+            <End Role="PetsTable" EntitySet="PetsTable" />
+            <End Role="OrdersTable" EntitySet="OrdersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTable_Users" Association="Model.FK_OrdersTable_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="OrdersTable" EntitySet="OrdersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTable_OrdersTable" Association="Model.FK_TimeTable_OrdersTable">
+            <End Role="OrdersTable" EntitySet="OrdersTable" />
+            <End Role="TimeTable" EntitySet="TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkersTable_OrdersTable" Association="Model.FK_WorkersTable_OrdersTable">
+            <End Role="OrdersTable" EntitySet="OrdersTable" />
+            <End Role="WorkersTable" EntitySet="WorkersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_RoleTable" Association="Model.FK_Users_RoleTable">
+            <End Role="RoleTable" EntitySet="RoleTable" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkersTable_ServicesTable" Association="Model.FK_WorkersTable_ServicesTable">
+            <End Role="ServicesTable" EntitySet="ServicesTable" />
+            <End Role="WorkersTable" EntitySet="WorkersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTable_WorkTimeTable" Association="Model.FK_TimeTable_WorkTimeTable">
+            <End Role="WorkTimeTable" EntitySet="WorkTimeTable" />
+            <End Role="TimeTable" EntitySet="TimeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPhoto_Users" Association="Model.FK_UserPhoto_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPhoto" EntitySet="UserPhoto" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="GenderTable">
+          <Key>
+            <PropertyRef Name="IDGender" />
+          </Key>
+          <Property Name="IDGender" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="Model.FK_Users_GenderTable" FromRole="GenderTable" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="OrdersTable">
+          <Key>
+            <PropertyRef Name="IDOrder" />
+          </Key>
+          <Property Name="IDOrder" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDUser" Type="Int32" Nullable="false" />
+          <Property Name="IDPets" Type="Int32" Nullable="false" />
+          <Property Name="WorkTime" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PetsTable" Relationship="Model.FK_OrdersTable_PetsTable" FromRole="OrdersTable" ToRole="PetsTable" />
+          <NavigationProperty Name="Users" Relationship="Model.FK_OrdersTable_Users" FromRole="OrdersTable" ToRole="Users" />
+          <NavigationProperty Name="TimeTable" Relationship="Model.FK_TimeTable_OrdersTable" FromRole="OrdersTable" ToRole="TimeTable" />
+          <NavigationProperty Name="WorkersTable" Relationship="Model.FK_WorkersTable_OrdersTable" FromRole="OrdersTable" ToRole="WorkersTable" />
+        </EntityType>
+        <EntityType Name="PetsTable">
+          <Key>
+            <PropertyRef Name="IDentry" />
+          </Key>
+          <Property Name="IDentry" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HavingAPet" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OrdersTable" Relationship="Model.FK_OrdersTable_PetsTable" FromRole="PetsTable" ToRole="OrdersTable" />
+        </EntityType>
+        <EntityType Name="RoleTable">
+          <Key>
+            <PropertyRef Name="IDRole" />
+          </Key>
+          <Property Name="IDRole" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Role" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="Model.FK_Users_RoleTable" FromRole="RoleTable" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ServicesTable">
+          <Key>
+            <PropertyRef Name="IDService" />
+          </Key>
+          <Property Name="IDService" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Service" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceCost" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="WorkersTable" Relationship="Model.FK_WorkersTable_ServicesTable" FromRole="ServicesTable" ToRole="WorkersTable" />
+        </EntityType>
+        <EntityType Name="TimeTable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDWorkTime" Type="Int32" Nullable="false" />
+          <Property Name="IDOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrdersTable" Relationship="Model.FK_TimeTable_OrdersTable" FromRole="TimeTable" ToRole="OrdersTable" />
+          <NavigationProperty Name="WorkTimeTable" Relationship="Model.FK_TimeTable_WorkTimeTable" FromRole="TimeTable" ToRole="WorkTimeTable" />
+        </EntityType>
+        <EntityType Name="UserPhoto">
+          <Key>
+            <PropertyRef Name="IDUser" />
+          </Key>
+          <Property Name="IDUser" Type="Int32" Nullable="false" />
+          <Property Name="PhotoPath" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="PhotoBinary" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Users" Relationship="Model.FK_UserPhoto_Users" FromRole="UserPhoto" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="IDUser" />
+          </Key>
+          <Property Name="IDUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="Int32" Nullable="false" />
+          <Property Name="IDGender" Type="Int32" Nullable="false" />
+          <Property Name="IDRole" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="GenderTable" Relationship="Model.FK_Users_GenderTable" FromRole="Users" ToRole="GenderTable" />
+          <NavigationProperty Name="OrdersTable" Relationship="Model.FK_OrdersTable_Users" FromRole="Users" ToRole="OrdersTable" />
+          <NavigationProperty Name="RoleTable" Relationship="Model.FK_Users_RoleTable" FromRole="Users" ToRole="RoleTable" />
+          <NavigationProperty Name="UserPhoto" Relationship="Model.FK_UserPhoto_Users" FromRole="Users" ToRole="UserPhoto" />
+        </EntityType>
+        <EntityType Name="WorkersTable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDOrder" Type="Int32" Nullable="false" />
+          <Property Name="IDService" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrdersTable" Relationship="Model.FK_WorkersTable_OrdersTable" FromRole="WorkersTable" ToRole="OrdersTable" />
+          <NavigationProperty Name="ServicesTable" Relationship="Model.FK_WorkersTable_ServicesTable" FromRole="WorkersTable" ToRole="ServicesTable" />
+        </EntityType>
+        <EntityType Name="WorkTimeTable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkTime" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TimeTable" Relationship="Model.FK_TimeTable_WorkTimeTable" FromRole="WorkTimeTable" ToRole="TimeTable" />
+        </EntityType>
+        <Association Name="FK_Users_GenderTable">
+          <End Type="Model.GenderTable" Role="GenderTable" Multiplicity="1" />
+          <End Type="Model.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GenderTable">
+              <PropertyRef Name="IDGender" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="IDGender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTable_PetsTable">
+          <End Type="Model.PetsTable" Role="PetsTable" Multiplicity="1" />
+          <End Type="Model.OrdersTable" Role="OrdersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PetsTable">
+              <PropertyRef Name="IDentry" />
+            </Principal>
+            <Dependent Role="OrdersTable">
+              <PropertyRef Name="IDPets" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTable_Users">
+          <End Type="Model.Users" Role="Users" Multiplicity="1" />
+          <End Type="Model.OrdersTable" Role="OrdersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="IDUser" />
+            </Principal>
+            <Dependent Role="OrdersTable">
+              <PropertyRef Name="IDUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTable_OrdersTable">
+          <End Type="Model.OrdersTable" Role="OrdersTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.TimeTable" Role="TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTable">
+              <PropertyRef Name="IDOrder" />
+            </Principal>
+            <Dependent Role="TimeTable">
+              <PropertyRef Name="IDOrder" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkersTable_OrdersTable">
+          <End Type="Model.OrdersTable" Role="OrdersTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.WorkersTable" Role="WorkersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTable">
+              <PropertyRef Name="IDOrder" />
+            </Principal>
+            <Dependent Role="WorkersTable">
+              <PropertyRef Name="IDOrder" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_RoleTable">
+          <End Type="Model.RoleTable" Role="RoleTable" Multiplicity="1" />
+          <End Type="Model.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTable">
+              <PropertyRef Name="IDRole" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="IDRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkersTable_ServicesTable">
+          <End Type="Model.ServicesTable" Role="ServicesTable" Multiplicity="1" />
+          <End Type="Model.WorkersTable" Role="WorkersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServicesTable">
+              <PropertyRef Name="IDService" />
+            </Principal>
+            <Dependent Role="WorkersTable">
+              <PropertyRef Name="IDService" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTable_WorkTimeTable">
+          <End Type="Model.WorkTimeTable" Role="WorkTimeTable" Multiplicity="1" />
+          <End Type="Model.TimeTable" Role="TimeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkTimeTable">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TimeTable">
+              <PropertyRef Name="IDWorkTime" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPhoto_Users">
+          <End Type="Model.Users" Role="Users" Multiplicity="1" />
+          <End Type="Model.UserPhoto" Role="UserPhoto" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="IDUser" />
+            </Principal>
+            <Dependent Role="UserPhoto">
+              <PropertyRef Name="IDUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="GenderTable">
+            <EntityTypeMapping TypeName="Model.GenderTable">
+              <MappingFragment StoreEntitySet="GenderTable">
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="IDGender" ColumnName="IDGender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdersTable">
+            <EntityTypeMapping TypeName="Model.OrdersTable">
+              <MappingFragment StoreEntitySet="OrdersTable">
+                <ScalarProperty Name="WorkTime" ColumnName="WorkTime" />
+                <ScalarProperty Name="IDPets" ColumnName="IDPets" />
+                <ScalarProperty Name="IDUser" ColumnName="IDUser" />
+                <ScalarProperty Name="IDOrder" ColumnName="IDOrder" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PetsTable">
+            <EntityTypeMapping TypeName="Model.PetsTable">
+              <MappingFragment StoreEntitySet="PetsTable">
+                <ScalarProperty Name="HavingAPet" ColumnName="HavingAPet" />
+                <ScalarProperty Name="IDentry" ColumnName="IDentry" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleTable">
+            <EntityTypeMapping TypeName="Model.RoleTable">
+              <MappingFragment StoreEntitySet="RoleTable">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="IDRole" ColumnName="IDRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServicesTable">
+            <EntityTypeMapping TypeName="Model.ServicesTable">
+              <MappingFragment StoreEntitySet="ServicesTable">
+                <ScalarProperty Name="ServiceCost" ColumnName="ServiceCost" />
+                <ScalarProperty Name="Service" ColumnName="Service" />
+                <ScalarProperty Name="IDService" ColumnName="IDService" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeTable">
+            <EntityTypeMapping TypeName="Model.TimeTable">
+              <MappingFragment StoreEntitySet="TimeTable">
+                <ScalarProperty Name="IDOrder" ColumnName="IDOrder" />
+                <ScalarProperty Name="IDWorkTime" ColumnName="IDWorkTime" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPhoto">
+            <EntityTypeMapping TypeName="Model.UserPhoto">
+              <MappingFragment StoreEntitySet="UserPhoto">
+                <ScalarProperty Name="PhotoBinary" ColumnName="PhotoBinary" />
+                <ScalarProperty Name="PhotoPath" ColumnName="PhotoPath" />
+                <ScalarProperty Name="IDUser" ColumnName="IDUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Model.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IDRole" ColumnName="IDRole" />
+                <ScalarProperty Name="IDGender" ColumnName="IDGender" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IDUser" ColumnName="IDUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkersTable">
+            <EntityTypeMapping TypeName="Model.WorkersTable">
+              <MappingFragment StoreEntitySet="WorkersTable">
+                <ScalarProperty Name="IDService" ColumnName="IDService" />
+                <ScalarProperty Name="IDOrder" ColumnName="IDOrder" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkTimeTable">
+            <EntityTypeMapping TypeName="Model.WorkTimeTable">
+              <MappingFragment StoreEntitySet="WorkTimeTable">
+                <ScalarProperty Name="WorkTime" ColumnName="WorkTime" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

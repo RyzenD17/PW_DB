@@ -1,0 +1,67 @@
+﻿<Page x:Class="PW10_DB.AdminShowOrders"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PW10_DB"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AdminShowOrders">
+    <ScrollViewer>
+        <Grid>
+           
+
+      <StackPanel>
+
+                <ComboBox Name="CBFilterGender" SelectionChanged="CBFilterGender_SelectionChanged"></ComboBox>
+                <TextBox Name="TBFilterSurname" TextChanged="TBFilterSurname_TextChanged"></TextBox>
+                <CheckBox Name="CBFilterPets" Checked="CBFilterPets_Checked" Unchecked="CBFilterPets_Unchecked" >Наличие домашнего животного</CheckBox>
+                <RadioButton Name="SortSurname" Checked="SortSurname_Checked">Сортировать по фамилии</RadioButton>
+                <RadioButton Name="SortHours" Checked="SortHours_Checked">Сортировать по часа</RadioButton>
+                <RadioButton Name="SortCost" Checked="SortCost_Checked">Сортировать по номеру заказа</RadioButton>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="10">
+                    <Button Click="Button_Click_4" Width="150">По возрастанию</Button>
+                    <Button Click="Button_Click_5" Width="150">По убыванию</Button>
+                </StackPanel>
+               
+          
+
+
+                <ListView Name="LVOrders" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center"></WrapPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="5" CornerRadius="3" BorderThickness="1" BorderBrush="LightPink" Background="{Binding CustomerColor}">
+                        <Grid Width="500" Height="310">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Номер заказа:</TextBlock>
+                                <TextBlock Text="{Binding IDOrder}"></TextBlock>
+                                <TextBlock Text="{Binding Customer}"></TextBlock>
+                                <TextBlock Loaded="TextBlock_Loaded" Uid="{Binding IDOrder}"></TextBlock>
+                                <TextBlock Loaded="TextBlock_Loaded_1" Uid="{Binding IDOrder}"></TextBlock>
+                                <TextBlock FontWeight="Bold">Наличие домашнего животного:</TextBlock>
+                                <TextBlock Text="{Binding PetsTable.HavingAPet}"></TextBlock>
+                                <TextBlock FontWeight="Bold">Количество часов:</TextBlock>
+                                <TextBlock Text="{Binding WorkTime}">ч.</TextBlock>
+                                <TextBlock FontWeight="Bold">Ориентировочная стоимость:</TextBlock>
+                                <TextBlock Loaded="TextBlock_Loaded_2" Uid="{Binding IDOrder}" ></TextBlock>
+                                <Button Uid="{Binding IDOrder}" Click="Button_Click_2">Удалить</Button>
+                                 <Button Uid="{Binding IDOrder}" Click="Button_Click_3">Редактировать</Button>
+                                    </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel>
+                    <Button Width="200" Click="Button_Click_1">Добавить новую запись</Button>
+                    <Button  Width="200" Click="Button_Click">В меню</Button>
+        </StackPanel>
+      </StackPanel>
+    </Grid>
+    </ScrollViewer>
+</Page>

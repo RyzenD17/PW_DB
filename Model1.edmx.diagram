@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f99349ce33bb4551953b7de3f0bf2d30" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="Model.GenderTable" Width="1.5" PointX="3.5" PointY="3" />
+        <EntityTypeShape EntityType="Model.OrdersTable" Width="1.5" PointX="5.625" PointY="5.25" />
+        <EntityTypeShape EntityType="Model.PetsTable" Width="1.5" PointX="8.25" PointY="9" />
+        <EntityTypeShape EntityType="Model.RoleTable" Width="1.5" PointX="3.5" PointY="1" />
+        <EntityTypeShape EntityType="Model.ServicesTable" Width="1.5" PointX="11.375" PointY="5.5" />
+        <EntityTypeShape EntityType="Model.TimeTable" Width="1.5" PointX="3.25" PointY="5.375" />
+        <EntityTypeShape EntityType="Model.UserPhoto" Width="1.5" PointX="8.5" PointY="1.25" />
+        <EntityTypeShape EntityType="Model.Users" Width="1.5" PointX="5.625" PointY="1.125" />
+        <EntityTypeShape EntityType="Model.WorkersTable" Width="1.5" PointX="8.125" PointY="5.375" />
+        <EntityTypeShape EntityType="Model.WorkTimeTable" Width="1.5" PointX="3.25" PointY="8.375" />
+        <AssociationConnector Association="Model.FK_Users_GenderTable" />
+        <AssociationConnector Association="Model.FK_OrdersTable_PetsTable" />
+        <AssociationConnector Association="Model.FK_OrdersTable_Users" />
+        <AssociationConnector Association="Model.FK_TimeTable_OrdersTable" />
+        <AssociationConnector Association="Model.FK_WorkersTable_OrdersTable" />
+        <AssociationConnector Association="Model.FK_Users_RoleTable" />
+        <AssociationConnector Association="Model.FK_WorkersTable_ServicesTable" />
+        <AssociationConnector Association="Model.FK_TimeTable_WorkTimeTable" />
+        <AssociationConnector Association="Model.FK_UserPhoto_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
